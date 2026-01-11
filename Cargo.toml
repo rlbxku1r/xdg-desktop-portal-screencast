@@ -1,0 +1,7 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/libsourceselector",
+    "crates/sourceselector-ui",
+    "crates/xdg-desktop-portal-screencast"
+]

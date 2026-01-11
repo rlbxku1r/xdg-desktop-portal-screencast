@@ -1,0 +1,13 @@
+[package]
+name = "xdg-desktop-portal-screencast"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+freedesktop-icons = "0.4.0"
+futures-util = "0.3.31"
+libc = "0.2.180"
+libsourceselector = { version = "0.1.0", path = "../libsourceselector" }
+rust-ini = "0.21.3"
+tokio = { version = "1.49.0", features = ["full"] }
+zbus = { version = "5.13.1", features = ["tokio"] }
