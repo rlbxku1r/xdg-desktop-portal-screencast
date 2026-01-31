@@ -127,22 +127,19 @@ pub fn run(
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
-    if args.len() != 3 {
-        let progname = if let Some(first_arg) = args.first() {
-            first_arg.split('/').next_back()
-        } else {
-            None
-        };
-        return Err(format!(
+    if args.len() == 3 {
+        let monitor_sources = &args[1];
+        let window_sources = &args[2];
+        run(
+            Sources::from_json(monitor_sources)?,
+            Sources::from_json(window_sources)?,
+        )
+    } else {
+        let progname = args.first().and_then(|x| x.split('/').next_back());
+        eprintln!(
             "Usage: {} [MONITOR SOURCES] [WINDOW SOURCES]",
             progname.unwrap_or("sourceselector-ui")
-        )
-        .into());
+        );
+        Ok(())
     }
-    let monitor_sources = &args[1];
-    let window_sources = &args[2];
-    run(
-        Sources::from_json(monitor_sources)?,
-        Sources::from_json(window_sources)?,
-    )
 }
