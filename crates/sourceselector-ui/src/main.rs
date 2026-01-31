@@ -101,7 +101,7 @@ impl eframe::App for SourceSelector {
     }
 }
 
-pub fn run(
+fn run(
     monitor_sources: Sources,
     window_sources: Sources,
 ) -> Result<(), Box<dyn std::error::Error>> {
