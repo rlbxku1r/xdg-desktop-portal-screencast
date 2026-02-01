@@ -10,8 +10,8 @@ pub struct ScreenCastSession<'a> {
     session_proxy: xdg_desktop_portal_proxy::Session<'a>,
     screencast_session_proxy: muffin_proxy::ScreenCastSession<'a>,
     screencast_stream: Option<ScreenCastStream<'a>>,
-    display_proxy: muffin_proxy::Display<'a>,
     display_config_proxy: muffin_proxy::DisplayConfig<'a>,
+    window_proxy: muffin_proxy::Window<'a>,
 }
 
 impl<'a> ScreenCastSession<'a> {
@@ -25,8 +25,8 @@ impl<'a> ScreenCastSession<'a> {
             xdg_desktop_portal_proxy::Session::new(&connection, session_handle).await?;
         let screencast_session_proxy =
             muffin_proxy::ScreenCastSession::new(&connection, session_object_path).await?;
-        let display_proxy = muffin_proxy::Display::new(&connection).await?;
         let display_config_proxy = muffin_proxy::DisplayConfig::new(&connection).await?;
+        let window_proxy = muffin_proxy::Window::new(&connection).await?;
 
         Ok(Self {
             connection,
@@ -34,8 +34,8 @@ impl<'a> ScreenCastSession<'a> {
             session_proxy,
             screencast_session_proxy,
             screencast_stream: None,
-            display_proxy,
             display_config_proxy,
+            window_proxy,
         })
     }
 
@@ -78,7 +78,7 @@ impl<'a> ScreenCastSession<'a> {
     }
 
     async fn get_window_sources(&self) -> zbus::Result<Sources> {
-        let windows = self.display_proxy.list_windows().await?;
+        let windows = self.window_proxy.list_windows().await?;
         let mut window_sources = Vec::new();
         for window in windows {
             let Some(Ok(window_id)) = window.get("id").map(|x| x.downcast_ref()) else {
