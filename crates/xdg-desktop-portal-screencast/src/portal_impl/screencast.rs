@@ -5,11 +5,11 @@ use zbus::zvariant;
 
 const SOURCE_TYPE_MONITOR: u32 = 1 << 0;
 const SOURCE_TYPE_WINDOW: u32 = 1 << 1;
-const SOURCE_TYPE_VIRTUAL: u32 = 1 << 2;
+const _SOURCE_TYPE_VIRTUAL: u32 = 1 << 2;
 
 const CURSOR_TYPE_HIDDEN: u32 = 1 << 0;
-const CURSOR_TYPE_EMBEDDED: u32 = 1 << 1;
-const CURSOR_TYPE_METADATA: u32 = 1 << 2;
+const _CURSOR_TYPE_EMBEDDED: u32 = 1 << 1;
+const _CURSOR_TYPE_METADATA: u32 = 1 << 2;
 
 #[derive(Clone)]
 pub struct ScreenCast {
@@ -278,11 +278,11 @@ impl<'a> ScreenCastInner<'a> {
     }
 
     fn available_cursor_modes() -> u32 {
-        CURSOR_TYPE_HIDDEN | CURSOR_TYPE_EMBEDDED | CURSOR_TYPE_METADATA
+        CURSOR_TYPE_HIDDEN
     }
 
     fn available_source_types() -> u32 {
-        SOURCE_TYPE_MONITOR | SOURCE_TYPE_WINDOW | SOURCE_TYPE_VIRTUAL
+        SOURCE_TYPE_MONITOR | SOURCE_TYPE_WINDOW
     }
 
     fn version() -> u32 {
