@@ -122,22 +122,8 @@ impl<'a> ScreenCastInner<'a> {
         handle: zvariant::OwnedObjectPath,
         session_handle: zvariant::OwnedObjectPath,
         app_id: String,
-        options: HashMap<String, zvariant::OwnedValue>,
+        _options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
-        #[cfg(debug_assertions)]
-        {
-            eprintln!("create_session():");
-            eprintln!("\thandle: {handle}");
-            eprintln!("\tsession_handle: {session_handle}");
-            eprintln!("\tapp_id: {app_id}");
-            eprintln!("\toptions: {options:?}");
-            /*
-               handle: /org/freedesktop/portal/desktop/request/1_148/obs1
-               session_handle: /org/freedesktop/portal/desktop/session/1_148/obs1
-               app_id: com.obsproject.Studio
-               options: {}
-            */
-        }
         let body = async {
             let connection = self.connection.clone();
             let session_object_path = self.screencast_proxy.create_session(HashMap::new()).await?;
@@ -163,23 +149,9 @@ impl<'a> ScreenCastInner<'a> {
         &mut self,
         handle: zvariant::OwnedObjectPath,
         session_handle: zvariant::OwnedObjectPath,
-        app_id: String,
-        options: HashMap<String, zvariant::OwnedValue>,
+        _app_id: String,
+        _options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
-        #[cfg(debug_assertions)]
-        {
-            eprintln!("select_sources():");
-            eprintln!("\thandle: {handle}");
-            eprintln!("\tsession_handle: {session_handle}");
-            eprintln!("\tapp_id: {app_id}");
-            eprintln!("\toptions: {options:?}");
-            /*
-               handle: /org/freedesktop/portal/desktop/request/1_148/obs2
-               session_handle: /org/freedesktop/portal/desktop/session/1_148/obs1
-               app_id: com.obsproject.Studio
-               options: {"multiple": Bool(false), "cursor_mode": U32(4), "types": U32(3), "persist_mode": U32(2)}
-            */
-        }
         let body = async {
             self.screencast_sessions
                 .get_mut(&session_handle)
@@ -206,26 +178,10 @@ impl<'a> ScreenCastInner<'a> {
         &self,
         handle: zvariant::OwnedObjectPath,
         session_handle: zvariant::OwnedObjectPath,
-        app_id: String,
-        parent_window: String,
-        options: HashMap<String, zvariant::OwnedValue>,
+        _app_id: String,
+        _parent_window: String,
+        _options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
-        #[cfg(debug_assertions)]
-        {
-            eprintln!("start():");
-            eprintln!("\thandle: {handle}");
-            eprintln!("\tsession_handle: {session_handle}");
-            eprintln!("\tapp_id: {app_id}");
-            eprintln!("\tparent_window: {parent_window}");
-            eprintln!("\toptions: {options:?}");
-            /*
-               handle: /org/freedesktop/portal/desktop/request/1_148/obs3
-               session_handle: /org/freedesktop/portal/desktop/session/1_148/obs1
-               app_id: com.obsproject.Studio
-               parent_window:
-               options: {}
-            */
-        }
         let body = async {
             let session = self
                 .screencast_sessions
