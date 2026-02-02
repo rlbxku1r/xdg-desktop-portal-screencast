@@ -5032,7 +5032,6 @@ version = "0.1.0"
 dependencies = [
  "freedesktop-icons",
  "futures-util",
- "libc",
  "libsourceselector",
  "rust-ini",
  "tokio",

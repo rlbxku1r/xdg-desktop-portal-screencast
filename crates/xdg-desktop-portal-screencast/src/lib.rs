@@ -1,16 +1,16 @@
 mod cinnamon_proxy;
 mod muffin_proxy;
 mod portal_impl;
-mod sigint;
 mod xdg_desktop_portal_proxy;
 
 use futures_util::StreamExt;
 use std::{
     collections::HashSet,
-    sync::atomic::{AtomicBool, Ordering},
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering},
+    },
 };
-
-static SIGINT_RECEIVED: AtomicBool = AtomicBool::new(false);
 
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let connection = zbus::connection::Builder::session()?
@@ -25,11 +25,9 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     setup_running_apps_watcher(&connection, screencast_ctx).await?;
 
-    sigint::set_callback(|| {
-        SIGINT_RECEIVED.store(true, Ordering::Relaxed);
-    });
+    let sigint_caught = setup_sigint_handler();
 
-    while !SIGINT_RECEIVED.load(Ordering::Relaxed) {
+    while !sigint_caught.load(Ordering::Relaxed) {
         tokio::time::sleep(std::time::Duration::from_secs(1)).await;
     }
 
@@ -68,4 +66,17 @@ async fn setup_running_apps_watcher(
     });
 
     Ok(())
+}
+
+fn setup_sigint_handler() -> Arc<AtomicBool> {
+    let sigint_caught = Arc::new(AtomicBool::new(false));
+    let sigint_caught_1 = sigint_caught.clone();
+    tokio::spawn(async move {
+        if let Err(err) = tokio::signal::ctrl_c().await {
+            eprintln!("SIGINT error: {err}");
+            return;
+        }
+        sigint_caught_1.store(true, Ordering::Relaxed);
+    });
+    sigint_caught
 }
