@@ -18,8 +18,14 @@ done
 TARGET_DIR=$(mktemp -d)
 
 # Build these crates separately to avoid unnecessary library linking
-cargo b -r -p 'xdg-desktop-portal-screencast' --manifest-path "$SOURCE_DIR/Cargo.toml" --target-dir "$TARGET_DIR"
-cargo b -r -p 'sourceselector-ui' --manifest-path "$SOURCE_DIR/Cargo.toml" --target-dir "$TARGET_DIR"
+if ! cargo b -r -p 'xdg-desktop-portal-screencast' --manifest-path "$SOURCE_DIR/Cargo.toml" --target-dir "$TARGET_DIR"; then
+	echo "$0: Failed to build the 'xdg-desktop-portal-screencast' crate." >&2
+	exit 1
+fi
+if ! cargo b -r -p 'sourceselector-ui' --manifest-path "$SOURCE_DIR/Cargo.toml" --target-dir "$TARGET_DIR"; then
+	echo "$0: Failed to build the 'sourceselector-ui' crate." >&2
+	exit 1
+fi
 
 cp -f -t '/usr/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast" "$TARGET_DIR/release/sourceselector-ui"
 cp -rf -t '/' "$SOURCE_DIR/files/."
