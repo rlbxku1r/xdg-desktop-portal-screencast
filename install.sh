@@ -21,8 +21,8 @@ TARGET_DIR=$(mktemp -d)
 cargo b -r -p 'xdg-desktop-portal-screencast' --manifest-path "$SOURCE_DIR/Cargo.toml" --target-dir "$TARGET_DIR"
 cargo b -r -p 'sourceselector-ui' --manifest-path "$SOURCE_DIR/Cargo.toml" --target-dir "$TARGET_DIR"
 
-cp -f -t '/usr/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast"
-cp -f -t '/usr/libexec' "$TARGET_DIR/release/sourceselector-ui"
+cp -f -t '/usr/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast" "$TARGET_DIR/release/sourceselector-ui"
+cp -rf -t '/' "$SOURCE_DIR/files/."
 
 rm -r "$TARGET_DIR"
 
