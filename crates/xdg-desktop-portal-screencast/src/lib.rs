@@ -5,7 +5,12 @@ mod sigint;
 mod xdg_desktop_portal_proxy;
 
 use futures_util::StreamExt;
-use std::collections::HashSet;
+use std::{
+    collections::HashSet,
+    sync::atomic::{AtomicBool, Ordering},
+};
+
+static SIGINT_RECEIVED: AtomicBool = AtomicBool::new(false);
 
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let connection = zbus::connection::Builder::session()?
@@ -20,9 +25,11 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     setup_running_apps_watcher(&connection, screencast_ctx).await?;
 
-    sigint::setup_handler();
+    sigint::set_callback(|| {
+        SIGINT_RECEIVED.store(true, Ordering::Relaxed);
+    });
 
-    while !sigint::is_signaled() {
+    while !SIGINT_RECEIVED.load(Ordering::Relaxed) {
         tokio::time::sleep(std::time::Duration::from_secs(1)).await;
     }
 

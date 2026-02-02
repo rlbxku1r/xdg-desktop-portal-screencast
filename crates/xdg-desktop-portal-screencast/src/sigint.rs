@@ -1,16 +1,24 @@
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Mutex;
 
-static SIGNALED: AtomicBool = AtomicBool::new(false);
+static CALLBACK: Mutex<Option<Box<dyn FnMut() + Send>>> = Mutex::new(None);
 
-pub fn setup_handler() {
-    extern "C" fn handler(_: libc::c_int) {
-        SIGNALED.store(true, Ordering::Relaxed);
-    }
-    unsafe {
-        libc::signal(libc::SIGINT, handler as *const () as libc::sighandler_t);
+pub fn set_callback<C>(callback: C)
+where
+    C: FnMut() + Send + 'static,
+{
+    if let Ok(mut x) = CALLBACK.lock() {
+        assert!(x.is_none(), "signal handlers can be set only once");
+        *x = Some(Box::new(callback));
+        unsafe {
+            libc::signal(libc::SIGINT, c_callback as *const () as libc::sighandler_t);
+        }
     }
 }
 
-pub fn is_signaled() -> bool {
-    SIGNALED.load(Ordering::Relaxed)
+extern "C" fn c_callback(_: libc::c_int) {
+    if let Ok(mut x) = CALLBACK.lock()
+        && let Some(ref mut callback) = *x
+    {
+        callback();
+    }
 }
