@@ -9,7 +9,7 @@ const _SOURCE_TYPE_VIRTUAL: u32 = 1 << 2;
 
 const CURSOR_TYPE_HIDDEN: u32 = 1 << 0;
 const _CURSOR_TYPE_EMBEDDED: u32 = 1 << 1;
-const _CURSOR_TYPE_METADATA: u32 = 1 << 2;
+const CURSOR_TYPE_METADATA: u32 = 1 << 2;
 
 #[derive(Clone)]
 pub struct ScreenCast {
@@ -233,7 +233,7 @@ impl<'a> ScreenCastInner<'a> {
     }
 
     fn available_cursor_modes() -> u32 {
-        CURSOR_TYPE_HIDDEN
+        CURSOR_TYPE_HIDDEN | CURSOR_TYPE_METADATA
     }
 
     fn available_source_types() -> u32 {
