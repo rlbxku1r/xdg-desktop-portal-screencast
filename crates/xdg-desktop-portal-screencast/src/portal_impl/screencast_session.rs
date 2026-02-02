@@ -15,11 +15,11 @@ pub struct ScreenCastSession<'a> {
 }
 
 impl<'a> ScreenCastSession<'a> {
-    pub async fn new(
+    pub async fn new<'b: 'a>(
         connection: zbus::Connection,
         app_id: String,
-        session_handle: &zvariant::ObjectPath<'a>,
-        session_object_path: &zvariant::ObjectPath<'a>,
+        session_handle: &zvariant::ObjectPath<'b>,
+        session_object_path: &zvariant::ObjectPath<'b>,
     ) -> zbus::Result<Self> {
         let session_proxy =
             xdg_desktop_portal_proxy::Session::new(&connection, session_handle).await?;

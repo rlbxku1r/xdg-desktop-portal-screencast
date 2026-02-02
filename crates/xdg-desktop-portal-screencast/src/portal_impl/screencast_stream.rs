@@ -7,9 +7,9 @@ pub struct ScreenCastStream<'a> {
 }
 
 impl<'a> ScreenCastStream<'a> {
-    pub async fn new(
+    pub async fn new<'b: 'a>(
         connection: zbus::Connection,
-        stream_object_path: &zvariant::ObjectPath<'a>,
+        stream_object_path: &zvariant::ObjectPath<'b>,
     ) -> zbus::Result<Self> {
         let screencast_stream_proxy =
             muffin_proxy::ScreenCastStream::new(&connection, stream_object_path).await?;
