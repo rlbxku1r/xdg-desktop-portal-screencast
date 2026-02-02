@@ -47,8 +47,7 @@ async fn setup_running_apps_watcher(
                         .map(|x| x.strip_suffix(".desktop").unwrap_or(x).to_owned())
                         .filter(|x| !x.is_empty())
                         .collect();
-                    let closed_apps: Vec<_> = last_apps.difference(&apps).collect();
-                    for app_id in closed_apps {
+                    for app_id in last_apps.difference(&apps) {
                         screencast_ctx.on_app_closed(app_id).await;
                     }
                     last_apps = apps;
