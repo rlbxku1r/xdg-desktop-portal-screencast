@@ -2,11 +2,6 @@
 
 SOURCE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
-if [[ $EUID -ne 0 ]]; then
-	echo "$0: This script must be run as root." >&2
-	exit 1
-fi
-
 # Check for the prerequisite tools
 for tool in cargo rustc; do
 	if ! command -v "$tool" &>/dev/null; then
@@ -33,7 +28,7 @@ if ! cargo b -r -p 'sourceselector-ui' --manifest-path "$SOURCE_DIR/Cargo.toml" 
 	exit 1
 fi
 
-cp -f -t '/usr/local/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast" "$TARGET_DIR/release/sourceselector-ui"
-cp -rf -t '/' "$SOURCE_DIR/files/."
+sudo cp -f -t '/usr/local/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast" "$TARGET_DIR/release/sourceselector-ui"
+sudo cp -rf -t '/' "$SOURCE_DIR/files/."
 
 exit 0
