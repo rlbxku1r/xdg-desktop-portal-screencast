@@ -1,5 +1,5 @@
 use super::ScreenCastStream;
-use crate::{muffin_proxy, xdg_desktop_portal_proxy};
+use crate::dbus_proxy;
 use libsourceselector::{SerdeJson, Source, Sources};
 use std::collections::HashMap;
 use zbus::zvariant;
@@ -7,11 +7,11 @@ use zbus::zvariant;
 pub struct ScreenCastSession<'a> {
     connection: zbus::Connection,
     app_id: String,
-    session_proxy: xdg_desktop_portal_proxy::Session<'a>,
-    screencast_session_proxy: muffin_proxy::ScreenCastSession<'a>,
+    session_proxy: dbus_proxy::xdg_desktop_portal::Session<'a>,
+    screencast_session_proxy: dbus_proxy::muffin::ScreenCastSession<'a>,
     screencast_stream: Option<ScreenCastStream<'a>>,
-    display_config_proxy: muffin_proxy::DisplayConfig<'a>,
-    window_proxy: muffin_proxy::Window<'a>,
+    display_config_proxy: dbus_proxy::muffin::DisplayConfig<'a>,
+    window_proxy: dbus_proxy::muffin::Window<'a>,
 }
 
 impl<'a> ScreenCastSession<'a> {
@@ -22,11 +22,11 @@ impl<'a> ScreenCastSession<'a> {
         session_object_path: &zvariant::ObjectPath<'b>,
     ) -> zbus::Result<Self> {
         let session_proxy =
-            xdg_desktop_portal_proxy::Session::new(&connection, session_handle).await?;
+            dbus_proxy::xdg_desktop_portal::Session::new(&connection, session_handle).await?;
         let screencast_session_proxy =
-            muffin_proxy::ScreenCastSession::new(&connection, session_object_path).await?;
-        let display_config_proxy = muffin_proxy::DisplayConfig::new(&connection).await?;
-        let window_proxy = muffin_proxy::Window::new(&connection).await?;
+            dbus_proxy::muffin::ScreenCastSession::new(&connection, session_object_path).await?;
+        let display_config_proxy = dbus_proxy::muffin::DisplayConfig::new(&connection).await?;
+        let window_proxy = dbus_proxy::muffin::Window::new(&connection).await?;
 
         Ok(Self {
             connection,

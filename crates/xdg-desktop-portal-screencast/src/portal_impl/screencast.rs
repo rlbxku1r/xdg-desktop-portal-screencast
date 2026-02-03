@@ -1,5 +1,5 @@
 use super::ScreenCastSession as Session;
-use crate::muffin_proxy;
+use crate::dbus_proxy;
 use std::{collections::HashMap, str::FromStr};
 use zbus::zvariant;
 
@@ -93,13 +93,13 @@ impl ScreenCast {
 
 struct ScreenCastInner<'a> {
     connection: zbus::Connection,
-    screencast_proxy: muffin_proxy::ScreenCast<'a>,
+    screencast_proxy: dbus_proxy::muffin::ScreenCast<'a>,
     screencast_sessions: HashMap<zvariant::OwnedObjectPath, Session<'a>>,
 }
 
 impl<'a> ScreenCastInner<'a> {
     async fn new(connection: zbus::Connection) -> zbus::Result<Self> {
-        let screencast_proxy = muffin_proxy::ScreenCast::new(&connection).await?;
+        let screencast_proxy = dbus_proxy::muffin::ScreenCast::new(&connection).await?;
 
         Ok(Self {
             connection,

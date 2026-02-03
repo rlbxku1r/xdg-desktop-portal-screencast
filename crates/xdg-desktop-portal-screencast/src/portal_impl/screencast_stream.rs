@@ -1,9 +1,9 @@
-use crate::muffin_proxy;
+use crate::dbus_proxy;
 use futures_util::StreamExt;
 use zbus::zvariant;
 
 pub struct ScreenCastStream<'a> {
-    screencast_stream_proxy: muffin_proxy::ScreenCastStream<'a>,
+    screencast_stream_proxy: dbus_proxy::muffin::ScreenCastStream<'a>,
 }
 
 impl<'a> ScreenCastStream<'a> {
@@ -12,7 +12,7 @@ impl<'a> ScreenCastStream<'a> {
         stream_object_path: &zvariant::ObjectPath<'b>,
     ) -> zbus::Result<Self> {
         let screencast_stream_proxy =
-            muffin_proxy::ScreenCastStream::new(&connection, stream_object_path).await?;
+            dbus_proxy::muffin::ScreenCastStream::new(&connection, stream_object_path).await?;
 
         Ok(Self {
             screencast_stream_proxy,

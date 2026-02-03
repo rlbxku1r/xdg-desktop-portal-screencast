@@ -1,7 +1,5 @@
-mod cinnamon_proxy;
-mod muffin_proxy;
+mod dbus_proxy;
 mod portal_impl;
-mod xdg_desktop_portal_proxy;
 
 use futures_util::StreamExt;
 use std::{
@@ -38,7 +36,7 @@ async fn setup_running_apps_watcher(
     connection: &zbus::Connection,
     screencast_ctx: portal_impl::ScreenCast,
 ) -> zbus::Result<()> {
-    let portal_handlers = cinnamon_proxy::PortalHandlers::new(connection).await?;
+    let portal_handlers = dbus_proxy::cinnamon::PortalHandlers::new(connection).await?;
     let mut stream = portal_handlers.receive_running_apps_changed().await?;
 
     tokio::spawn(async move {
