@@ -197,10 +197,7 @@ impl<'a> ScreenCastInner<'a> {
                 .add_field(HashMap::<&str, zvariant::Value>::new())
                 .build()?;
             streams.append(stream_info.into())?;
-            zbus::Result::Ok(HashMap::from([(
-                "streams".into(),
-                zvariant::OwnedValue::try_from(streams)?,
-            )]))
+            zbus::Result::Ok([("streams".into(), zvariant::OwnedValue::try_from(streams)?)].into())
         };
         match body.await {
             Ok(streams) => {

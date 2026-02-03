@@ -55,8 +55,8 @@ impl<'a> ScreenCastSession<'a> {
                     .await?
             }
             Source::Window { window_id, .. } => {
-                let window_id = zvariant::Value::from(window_id);
-                let properties = HashMap::from([("window-id", &window_id)]);
+                let window_id = window_id.into();
+                let properties = [("window-id", &window_id)].into();
                 self.screencast_session_proxy
                     .record_window(properties)
                     .await?
