@@ -1,6 +1,6 @@
 use egui::{
-    FontFamily,
-    epaint::text::{FontPriority, InsertFontFamily},
+    FontData, FontFamily,
+    epaint::text::{FontInsert, FontPriority, InsertFontFamily},
 };
 
 const FONTS: &[(&str, &[u8], &[InsertFontFamily])] = &[
@@ -23,11 +23,11 @@ const FONTS: &[(&str, &[u8], &[InsertFontFamily])] = &[
 ];
 
 pub fn install(egui_ctx: &egui::Context) {
-    for &font in FONTS.iter() {
-        let (name, data, families) = font;
-        egui_ctx.add_font(egui::epaint::text::FontInsert::new(
+    for font in FONTS.iter() {
+        let &(name, data, families) = font;
+        egui_ctx.add_font(FontInsert::new(
             name,
-            egui::FontData::from_static(data),
+            FontData::from_static(data),
             families.into(),
         ));
     }
