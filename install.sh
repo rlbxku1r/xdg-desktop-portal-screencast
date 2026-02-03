@@ -33,7 +33,7 @@ if ! cargo b -r -p 'sourceselector-ui' --manifest-path "$SOURCE_DIR/Cargo.toml" 
 	exit 1
 fi
 
-cp -f -t '/usr/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast" "$TARGET_DIR/release/sourceselector-ui"
+cp -f -t '/usr/local/libexec' "$TARGET_DIR/release/xdg-desktop-portal-screencast" "$TARGET_DIR/release/sourceselector-ui"
 cp -rf -t '/' "$SOURCE_DIR/files/."
 
 exit 0

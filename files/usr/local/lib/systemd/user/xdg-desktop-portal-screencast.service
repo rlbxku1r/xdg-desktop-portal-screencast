@@ -6,4 +6,4 @@ After=graphical-session.target
 [Service]
 Type=dbus
 BusName=org.freedesktop.impl.portal.desktop.screencast
-ExecStart=/usr/libexec/xdg-desktop-portal-screencast
+ExecStart=/usr/local/libexec/xdg-desktop-portal-screencast
