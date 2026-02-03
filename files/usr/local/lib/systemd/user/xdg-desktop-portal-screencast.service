@@ -1,7 +1,5 @@
 [Unit]
 Description=Portal service (Muffin Screencast implementation)
-PartOf=graphical-session.target
-After=graphical-session.target
 
 [Service]
 Type=dbus
