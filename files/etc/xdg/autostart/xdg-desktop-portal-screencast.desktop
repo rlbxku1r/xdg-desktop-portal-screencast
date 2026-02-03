@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=xdg-desktop-portal-screencast
+Comment=Portal service (Muffin Screencast implementation)
+Exec=/usr/local/libexec/xdg-desktop-portal-screencast
+Type=Application
+OnlyShowIn=X-Cinnamon;
+NoDisplay=true

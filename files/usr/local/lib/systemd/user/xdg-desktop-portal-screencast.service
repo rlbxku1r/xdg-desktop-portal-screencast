@@ -1,7 +1,0 @@
-[Unit]
-Description=Portal service (Muffin Screencast implementation)
-
-[Service]
-Type=dbus
-BusName=org.freedesktop.impl.portal.desktop.screencast
-ExecStart=/usr/local/libexec/xdg-desktop-portal-screencast
