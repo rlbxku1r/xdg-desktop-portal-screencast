@@ -55,11 +55,12 @@ async fn setup_running_apps_watcher(
                     }
                     last_apps = apps;
                 }
-                Err(err) => eprintln!("org.cinnamon.PortalHandlers - GetAppStates(): {err}"),
+                Err(err) => log::error!("org.cinnamon.PortalHandlers - GetAppStates(): {err}"),
             }
         }
+        // Something went wrong in the compositor?
         panic!(
-            "org.cinnamon.PortalHandlers - RunningAppsChanged(): Signal stream has been terminated"
+            "org.cinnamon.PortalHandlers - RunningAppsChanged(): The signal stream ended unexpectedly"
         );
     });
 
@@ -71,7 +72,7 @@ fn setup_sigint_handler() -> Arc<AtomicBool> {
     let sigint_caught_1 = sigint_caught.clone();
     tokio::spawn(async move {
         if let Err(err) = tokio::signal::ctrl_c().await {
-            eprintln!("SIGINT error: {err}");
+            log::error!("SIGINT: {err}");
             return;
         }
         sigint_caught_1.store(true, Ordering::Relaxed);

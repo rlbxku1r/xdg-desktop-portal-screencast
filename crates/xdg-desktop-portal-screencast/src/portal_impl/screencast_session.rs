@@ -82,7 +82,7 @@ impl<'a> ScreenCastSession<'a> {
         let mut window_sources = Vec::new();
         for window in windows {
             let Some(Ok(window_id)) = window.get("id").map(|x| x.downcast_ref()) else {
-                eprintln!("Window id isn't valid integer or unavailable, skipping...");
+                log::warn!("Window id isn't valid integer or unavailable, skipping...");
                 continue;
             };
             let window_name = window
@@ -146,8 +146,8 @@ fn get_icon_path(app_id: &str) -> Option<String> {
         std::sync::LazyLock::new(|| match get_xdg_data_home() {
             Ok(dir) => dir,
             Err(err) => {
-                eprintln!("Could not determine the $XDG_DATA_HOME directory: {err}");
-                eprintln!("User *.desktop files will not be looked up");
+                log::warn!("Could not determine the $XDG_DATA_HOME directory: {err}");
+                log::warn!("User *.desktop files will not be looked up");
                 "".into()
             }
         });
@@ -161,7 +161,7 @@ fn get_icon_path(app_id: &str) -> Option<String> {
             Ok(ini) => ini,
             Err(ini::Error::Io(err)) if err.kind() == std::io::ErrorKind::NotFound => continue,
             Err(err) => {
-                eprintln!("Could not read '{path}': {err}");
+                log::error!("Could not read '{path}': {err}");
                 return None;
             }
         };

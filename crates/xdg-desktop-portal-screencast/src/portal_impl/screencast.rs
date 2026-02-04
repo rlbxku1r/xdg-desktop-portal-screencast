@@ -39,6 +39,12 @@ impl ScreenCast {
         app_id: String,
         options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
+        log::debug!("create_session():");
+        log::debug!("\thandle: {handle}");
+        log::debug!("\tsession_handle: {session_handle}");
+        log::debug!("\tapp_id: {app_id}");
+        log::debug!("\toptions: {options:?}");
+
         self.inner
             .lock()
             .await
@@ -53,6 +59,12 @@ impl ScreenCast {
         app_id: String,
         options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
+        log::debug!("select_sources():");
+        log::debug!("\thandle: {handle}");
+        log::debug!("\tsession_handle: {session_handle}");
+        log::debug!("\tapp_id: {app_id}");
+        log::debug!("\toptions: {options:?}");
+
         self.inner
             .lock()
             .await
@@ -68,6 +80,13 @@ impl ScreenCast {
         parent_window: String,
         options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
+        log::debug!("start():");
+        log::debug!("\thandle: {handle}");
+        log::debug!("\tsession_handle: {session_handle}");
+        log::debug!("\tapp_id: {app_id}");
+        log::debug!("\tparent_window: {parent_window}");
+        log::debug!("\toptions: {options:?}");
+
         self.inner
             .lock()
             .await
@@ -138,7 +157,7 @@ impl<'a> ScreenCastInner<'a> {
                 (0, HashMap::new())
             }
             Err(err) => {
-                eprintln!("create_session error: {err}");
+                log::error!("create_session(): {err}");
                 _ = self.emit_request_ack(&handle, 2, HashMap::new()).await;
                 (1, HashMap::new())
             }
@@ -167,7 +186,7 @@ impl<'a> ScreenCastInner<'a> {
                 (0, HashMap::new())
             }
             Err(err) => {
-                eprintln!("select_sources error: {err}");
+                log::error!("select_sources(): {err}");
                 _ = self.emit_request_ack(&handle, 2, HashMap::new()).await;
                 (1, HashMap::new())
             }
@@ -205,7 +224,7 @@ impl<'a> ScreenCastInner<'a> {
                 (0, streams)
             }
             Err(err) => {
-                eprintln!("start error: {err}");
+                log::error!("start(): {err}");
                 _ = self.emit_request_ack(&handle, 2, HashMap::new()).await;
                 (1, HashMap::new())
             }
