@@ -39,7 +39,7 @@ impl ScreenCast {
         app_id: String,
         options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
-        log::debug!("create_session():");
+        log::debug!("CreateSession():");
         log::debug!("\thandle: {handle}");
         log::debug!("\tsession_handle: {session_handle}");
         log::debug!("\tapp_id: {app_id}");
@@ -59,7 +59,7 @@ impl ScreenCast {
         app_id: String,
         options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
-        log::debug!("select_sources():");
+        log::debug!("SelectSources():");
         log::debug!("\thandle: {handle}");
         log::debug!("\tsession_handle: {session_handle}");
         log::debug!("\tapp_id: {app_id}");
@@ -80,7 +80,7 @@ impl ScreenCast {
         parent_window: String,
         options: HashMap<String, zvariant::OwnedValue>,
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
-        log::debug!("start():");
+        log::debug!("Start():");
         log::debug!("\thandle: {handle}");
         log::debug!("\tsession_handle: {session_handle}");
         log::debug!("\tapp_id: {app_id}");
