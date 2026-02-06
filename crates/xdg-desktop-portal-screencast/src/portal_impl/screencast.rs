@@ -216,6 +216,7 @@ impl<'a> ScreenCastInner<'a> {
                 .add_field(HashMap::<&str, zvariant::Value>::new())
                 .build()?;
             streams.append(stream_info.into())?;
+            log::debug!("ScreenCast started on PipeWire stream ID: {pipewire_stream_id}");
             zbus::Result::Ok([("streams".into(), zvariant::OwnedValue::try_from(streams)?)].into())
         };
         match body.await {
