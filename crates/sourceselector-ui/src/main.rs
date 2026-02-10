@@ -138,7 +138,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let progname = args.first().and_then(|x| x.split('/').next_back());
         eprintln!(
             "Usage: {} [MONITOR SOURCES] [WINDOW SOURCES]",
-            progname.unwrap_or("sourceselector-ui")
+            progname.unwrap_or(env!("CARGO_PKG_NAME"))
         );
         Ok(())
     }
