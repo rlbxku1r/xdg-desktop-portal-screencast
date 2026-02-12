@@ -145,9 +145,15 @@ impl<'a> ScreenCastInner<'a> {
     ) -> (u32, HashMap<String, zvariant::OwnedValue>) {
         let body = async {
             let connection = self.connection.clone();
-            let session_object_path = self.screencast_proxy.create_session(HashMap::new()).await?;
-            let session =
-                Session::new(connection, app_id, &session_handle, &session_object_path).await?;
+            let screencast_session_proxy =
+                self.screencast_proxy.create_session(HashMap::new()).await?;
+            let session = Session::new(
+                connection,
+                app_id,
+                &session_handle,
+                screencast_session_proxy,
+            )
+            .await?;
             self.screencast_sessions.insert(session_handle, session);
             zbus::Result::Ok(())
         };

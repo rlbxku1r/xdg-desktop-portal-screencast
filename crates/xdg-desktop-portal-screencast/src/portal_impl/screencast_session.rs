@@ -5,7 +5,6 @@ use std::collections::HashMap;
 use zbus::zvariant;
 
 pub struct ScreenCastSession<'a> {
-    connection: zbus::Connection,
     app_id: String,
     session_proxy: dbus_proxy::xdg_desktop_portal::Session<'a>,
     screencast_session_proxy: dbus_proxy::muffin::ScreenCastSession<'a>,
@@ -19,17 +18,14 @@ impl<'a> ScreenCastSession<'a> {
         connection: zbus::Connection,
         app_id: String,
         session_handle: &zvariant::ObjectPath<'b>,
-        session_object_path: &zvariant::ObjectPath<'b>,
+        screencast_session_proxy: dbus_proxy::muffin::ScreenCastSession<'a>,
     ) -> zbus::Result<Self> {
         let session_proxy =
             dbus_proxy::xdg_desktop_portal::Session::new(&connection, session_handle).await?;
-        let screencast_session_proxy =
-            dbus_proxy::muffin::ScreenCastSession::new(&connection, session_object_path).await?;
         let display_config_proxy = dbus_proxy::muffin::DisplayConfig::new(&connection).await?;
         let window_proxy = dbus_proxy::muffin::Window::new(&connection).await?;
 
         Ok(Self {
-            connection,
             app_id,
             session_proxy,
             screencast_session_proxy,
@@ -48,7 +44,7 @@ impl<'a> ScreenCastSession<'a> {
             .open_source_selector()
             .await
             .map_err(|err| zbus::Error::Failure(err.to_string()))?;
-        let stream_object_path = match selected_source {
+        let screencast_stream_proxy = match selected_source {
             Source::Monitor { monitor_name } => {
                 self.screencast_session_proxy
                     .record_monitor(&monitor_name, HashMap::new())
@@ -62,8 +58,7 @@ impl<'a> ScreenCastSession<'a> {
                     .await?
             }
         };
-        self.screencast_stream =
-            Some(ScreenCastStream::new(self.connection.clone(), &stream_object_path).await?);
+        self.screencast_stream = Some(ScreenCastStream::new(screencast_stream_proxy).await?);
         Ok(())
     }
 

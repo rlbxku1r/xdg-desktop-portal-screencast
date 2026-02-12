@@ -1,19 +1,14 @@
 use crate::dbus_proxy;
 use futures_util::StreamExt;
-use zbus::zvariant;
 
 pub struct ScreenCastStream<'a> {
     screencast_stream_proxy: dbus_proxy::muffin::ScreenCastStream<'a>,
 }
 
 impl<'a> ScreenCastStream<'a> {
-    pub async fn new<'b: 'a>(
-        connection: zbus::Connection,
-        stream_object_path: &zvariant::ObjectPath<'b>,
+    pub async fn new(
+        screencast_stream_proxy: dbus_proxy::muffin::ScreenCastStream<'a>,
     ) -> zbus::Result<Self> {
-        let screencast_stream_proxy =
-            dbus_proxy::muffin::ScreenCastStream::new(&connection, stream_object_path).await?;
-
         Ok(Self {
             screencast_stream_proxy,
         })
