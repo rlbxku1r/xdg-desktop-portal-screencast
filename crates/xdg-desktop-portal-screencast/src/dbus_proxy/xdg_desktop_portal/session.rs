@@ -1,6 +1,7 @@
 #[zbus::proxy(
     interface = "org.freedesktop.portal.Session",
-    default_service = "org.freedesktop.portal.Desktop"
+    default_service = "org.freedesktop.portal.Desktop",
+    gen_blocking = false
 )]
 pub trait Session {
     fn close(&self) -> zbus::Result<()>;

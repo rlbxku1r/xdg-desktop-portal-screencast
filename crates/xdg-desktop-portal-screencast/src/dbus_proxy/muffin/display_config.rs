@@ -1,7 +1,8 @@
 #[zbus::proxy(
     interface = "org.cinnamon.Muffin.DisplayConfig",
     default_service = "org.cinnamon.Muffin.DisplayConfig",
-    default_path = "/org/cinnamon/Muffin/DisplayConfig"
+    default_path = "/org/cinnamon/Muffin/DisplayConfig",
+    gen_blocking = false
 )]
 pub trait DisplayConfig {
     #[allow(clippy::type_complexity)]

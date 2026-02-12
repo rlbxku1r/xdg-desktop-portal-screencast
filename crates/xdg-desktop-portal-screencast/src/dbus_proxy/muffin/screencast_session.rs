@@ -1,6 +1,7 @@
 #[zbus::proxy(
     interface = "org.cinnamon.Muffin.ScreenCast.Session",
-    default_service = "org.cinnamon.Muffin.ScreenCast"
+    default_service = "org.cinnamon.Muffin.ScreenCast",
+    gen_blocking = false
 )]
 pub trait Session {
     fn record_monitor(

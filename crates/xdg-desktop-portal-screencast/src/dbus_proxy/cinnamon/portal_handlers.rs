@@ -1,7 +1,8 @@
 #[zbus::proxy(
     interface = "org.cinnamon.PortalHandlers",
     default_service = "org.Cinnamon",
-    default_path = "/org/Cinnamon"
+    default_path = "/org/Cinnamon",
+    gen_blocking = false
 )]
 pub trait PortalHandlers {
     fn get_app_states(
