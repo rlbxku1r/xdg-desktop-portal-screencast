@@ -41,5 +41,4 @@ pub trait SerdeJson<'de>: serde::Serialize + serde::Deserialize<'de> {
     }
 }
 
-impl<'de> SerdeJson<'de> for Source {}
-impl<'de> SerdeJson<'de> for Sources {}
+impl<'de, T> SerdeJson<'de> for T where T: serde::Serialize + serde::Deserialize<'de> {}
