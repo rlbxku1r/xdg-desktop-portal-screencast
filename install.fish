@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set SOURCE_DIR (status dirname)
+set source_dir (status dirname)
 
 # Check for the prerequisite tools
 for tool in cargo rustc
@@ -10,21 +10,21 @@ for tool in cargo rustc
     end
 end
 
-set TARGET_DIR (mktemp -d)
+set target_dir (mktemp -d)
 
 function on_exit -e fish_exit
-    rm -r $TARGET_DIR
+    rm -r $target_dir
 end
 
 # Build these crates separately to avoid unnecessary library linking
 for crate in xdg-desktop-portal-screencast sourceselector-ui
-    if ! cargo b -r -p $crate --manifest-path $SOURCE_DIR/Cargo.toml --target-dir $TARGET_DIR
+    if ! cargo b -r -p $crate --manifest-path $source_dir/Cargo.toml --target-dir $target_dir
         echo "Failed to build the '$crate' crate." >&2
         exit 1
     end
 end
 
-sudo cp -f -t /usr/local/libexec $TARGET_DIR/release/xdg-desktop-portal-screencast $TARGET_DIR/release/sourceselector-ui
-sudo cp -rf -t / $SOURCE_DIR/files/.
+sudo cp -f -t /usr/local/libexec $target_dir/release/xdg-desktop-portal-screencast $target_dir/release/sourceselector-ui
+sudo cp -rf -t / $source_dir/files/.
 
 exit 0
