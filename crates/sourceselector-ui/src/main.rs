@@ -20,13 +20,8 @@ impl SourceSelector {
         }
     }
 
-    fn add_source_table(
-        &self,
-        ctx: &egui::Context,
-        ui: &mut egui::Ui,
-        id_salt: &str,
-        sources: &Sources,
-    ) {
+    fn add_source_table(&self, ui: &mut egui::Ui, id_salt: &str, sources: &Sources) {
+        let ctx = ui.ctx().clone();
         egui_extras::TableBuilder::new(ui)
             .id_salt(id_salt)
             .sense(egui::Sense::click())
@@ -77,19 +72,19 @@ impl SourceSelector {
 }
 
 impl eframe::App for SourceSelector {
-    fn update(&mut self, ctx: &egui::Context, _: &mut eframe::Frame) {
-        egui::CentralPanel::default().show(ctx, |ui| {
+    fn ui(&mut self, ui: &mut egui::Ui, _: &mut eframe::Frame) {
+        egui::CentralPanel::default().show(ui, |ui| {
             ui.vertical_centered(|ui| {
                 ui.label(egui::RichText::new("Monitors").heading());
-                self.add_source_table(ctx, ui, "monitor-table", &self.monitor_sources);
+                self.add_source_table(ui, "monitor-table", &self.monitor_sources);
                 ui.separator();
                 ui.label(egui::RichText::new("Windows").heading());
-                self.add_source_table(ctx, ui, "window-table", &self.window_sources);
+                self.add_source_table(ui, "window-table", &self.window_sources);
             });
         });
     }
 
-    fn on_exit(&mut self, _: Option<&eframe::glow::Context>) {
+    fn on_exit(&mut self) {
         let Some(selected_source) = self.selected_source.take() else {
             eprintln!("Source wasn't selected");
             return;
