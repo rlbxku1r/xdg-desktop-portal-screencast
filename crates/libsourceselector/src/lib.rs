@@ -31,14 +31,20 @@ impl From<Sources> for Vec<Source> {
     }
 }
 
-pub trait SerdeJson<'de>: serde::Serialize + serde::Deserialize<'de> {
+pub trait SerdeJson: Sized {
+    fn to_json(&self) -> Result<String, serde_json::Error>;
+    fn from_json(s: &str) -> Result<Self, serde_json::Error>;
+}
+
+impl<T> SerdeJson for T
+where
+    T: serde::Serialize + for<'de> serde::Deserialize<'de>,
+{
     fn to_json(&self) -> Result<String, serde_json::Error> {
         serde_json::to_string(&self)
     }
 
-    fn from_json(s: &'de str) -> Result<Self, serde_json::Error> {
+    fn from_json(s: &str) -> Result<Self, serde_json::Error> {
         serde_json::from_str(s)
     }
 }
-
-impl<'de, T> SerdeJson<'de> for T where T: serde::Serialize + serde::Deserialize<'de> {}
