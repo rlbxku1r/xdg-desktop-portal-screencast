@@ -1,6 +1,6 @@
 mod egui_fonts;
 
-use libsourceselector::{SerdeJson, Source, Sources};
+use libsourceselector::{SerdeJson as _, Source, Sources};
 use std::cell::Cell;
 
 const ICON_SIZE: f32 = 24.0;

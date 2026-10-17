@@ -1,6 +1,6 @@
 use super::ScreenCastStream;
 use crate::dbus_proxy;
-use libsourceselector::{SerdeJson, Source, Sources};
+use libsourceselector::{SerdeJson as _, Source, Sources};
 use std::collections::HashMap;
 use zbus::zvariant;
 
