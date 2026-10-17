@@ -1,5 +1,5 @@
 use crate::{dbus_proxy, portal_impl};
-use futures_util::StreamExt;
+use futures_util::StreamExt as _;
 use std::collections::HashSet;
 
 pub async fn setup(

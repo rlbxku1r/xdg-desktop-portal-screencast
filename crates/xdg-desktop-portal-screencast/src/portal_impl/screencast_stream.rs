@@ -1,5 +1,5 @@
 use crate::dbus_proxy;
-use futures_util::StreamExt;
+use futures_util::StreamExt as _;
 
 pub struct ScreenCastStream<'a> {
     screencast_stream_proxy: dbus_proxy::muffin::ScreenCastStream<'a>,
