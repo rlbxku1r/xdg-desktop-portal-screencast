@@ -9,7 +9,7 @@ egui_extras = { version = "0.37.0", features = ["all_loaders"] }
 env_logger = "0.11.11"
 freedesktop-icons = "0.4.0"
 futures-util = "0.3.34"
-libsourceselector = { path = "crates/libsourceselector", version = "0.1.0" }
+libsourceselector = { path = "crates/libsourceselector" }
 log = "0.4.34"
 rust-ini = "0.21.3"
 serde = { version = "1.0.229", features = ["derive"] }
