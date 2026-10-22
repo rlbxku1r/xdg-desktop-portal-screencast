@@ -21,22 +21,26 @@ impl SourceSelector {
     }
 
     fn add_source_table(&self, ui: &mut egui::Ui, id_salt: &str, sources: &Sources) {
-        let ctx = ui.ctx().clone();
         egui_extras::TableBuilder::new(ui)
             .id_salt(id_salt)
             .sense(egui::Sense::click())
             .column(egui_extras::Column::remainder())
             .body(|mut body| {
                 for source in sources.iter() {
+                    let mut should_close = false;
                     body.row(ICON_SIZE, |mut row| {
                         let (_, response) = row.col(|ui| {
                             ui.horizontal(|ui| Self::add_source_row_content(ui, source));
                         });
                         if response.clicked() {
                             self.selected_source.set(Some(source.to_owned()));
-                            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                            should_close = true;
                         }
                     });
+                    if should_close {
+                        body.ui_mut()
+                            .send_viewport_cmd(egui::ViewportCommand::Close);
+                    }
                 }
             });
     }
