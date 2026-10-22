@@ -1,5 +1,3 @@
-mod egui_fonts;
-
 use libsourceselector::{SerdeJson as _, Source, Sources};
 use std::cell::Cell;
 
@@ -113,7 +111,6 @@ fn run(
         options,
         Box::new(|cc| {
             egui_extras::install_image_loaders(&cc.egui_ctx);
-            egui_fonts::install(&cc.egui_ctx);
             cc.egui_ctx.set_zoom_factor(1.3);
             Ok(Box::new(SourceSelector::new(
                 monitor_sources,
