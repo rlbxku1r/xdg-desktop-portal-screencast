@@ -1,6 +1,6 @@
 use super::ScreenCastSession as Session;
 use crate::dbus_proxy;
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::HashMap, str::FromStr as _};
 use zbus::zvariant;
 
 const SOURCE_TYPE_MONITOR: u32 = 1 << 0;
